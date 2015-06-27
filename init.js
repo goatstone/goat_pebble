@@ -5,8 +5,7 @@ var http = require('http');
 Cylon.robot(
 {
 	connections:{
-		edison:{adaptor: 'intel-iot'}//,
-		//m2x: { adaptor: 'm2x', apiKey: 'ed685207dcc9b6d9914381dae7f717c5', feedId: '815191bff4d7dd4ad5c92fa4cc7cdd8d'}
+		edison:{adaptor: 'intel-iot'}
 	},
 	devices: {
 		led: {driver:'led', pin:4},
@@ -17,7 +16,6 @@ Cylon.robot(
 		temperature: {driver: 'analogSensor', pin: 0},
 		light: {driver: 'analogSensor', pin:3},
 		sound: {driver: 'analogSensor', pin:2}
-	    	//m2x: { driver: 'm2x' }
 	},
 	work: function(my){
 		var out = {};
@@ -31,8 +29,8 @@ Cylon.robot(
 		my.temperature.on('analogRead', function(d){
 			out.temperature = d;
 		});
-		my.rotary.on('analogRead', function(data){
-			my.screen.setColor(255, 0, Math.round(data/5));
+		my.rotary.on('analogRead', function(data){			
+			my.screen.setColor(Math.round(data/5), 0, Math.round(data/5));
 		});
 		my.button.on('push', function(){
 			my.led.toggle();
@@ -52,8 +50,9 @@ Cylon.robot(
                         my.screen.write(o.slice(0,2).join("") );
                         my.screen.setCursor(1,0);
                         my.screen.write(o.slice(2,3).join(""));
+			//my.screen.setColor( 255, 0, Math.round(Math.random()*100 ) );
 		});
-		every((2).second(), function(){	
+		every((3).second(), function(){	
 			var h = 'api-m2x.att.com';
 			var p = '/v2/devices/815191bff4d7dd4ad5c92fa4cc7cdd8d/updates/';
 			var headers = {
@@ -79,7 +78,7 @@ Cylon.robot(
 var analogValue = my.temperature.analogRead();
 var voltage = (analogValue * 5.0) / 1024;
 var temperature = (voltage - 0.5) * 100;
-console.log('t', temperature);
+ console.log('t', temperature);
 
 			var pack = {"values":{
 				"temperature":[{timestamp:new Date(), "value":out.temperature}],

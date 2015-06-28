@@ -2,7 +2,7 @@
 var Cylon = require('cylon');
 var querystring = require('querystring');
 var http = require('http');
-var ajax = require('ajax');
+var request = require('request');
 Cylon.robot(
 {
 	connections:{
@@ -36,12 +36,6 @@ Cylon.robot(
 		my.button.on('push', function(){
 			my.led.toggle();
 		});
-  		//my.touch.on('push', function() {
-		//	console.log('touch...');
-		//});
-		//my.touch.on('release', function(){
-		//	console.log('release...');
-		//});
 		//every((2).second(), function(){
 			//console.log('update local display...');
                   //      var o = Object.keys(out).map(function(e, i){
@@ -54,64 +48,51 @@ Cylon.robot(
 			//my.screen.setColor( 255, 0, Math.round(Math.random()*100 ) );
 		//});
 		every((2).second(),function(){
-			console.log('poll the server');
 
-
-var h = 'pebblecontrolsea.firebaseio.com';
-var p = '/feed.json';
-
+console.log('poll the server - - - ');
 var fullURL =  'https://pebblecontrolsea.firebaseio.com/feed.json';
-
-var request = require('request');
 var options = {
   url: fullURL,
   headers: {
     'User-Agent': 'request'
   }
 };
+
 function callback(error, response, body) {
-  if (!error && response.statusCode == 200) {
-    var info = JSON.parse(body);
-    //console.log( response );
-	var c = [20,20,20];
-var d = c.join(', ');
-console.log(d);    
-   var color = (info.color === 'Blue')? [0,0,255] : [255,0,0] ;
-   my.screen.setColor.apply(this, color);
-
-    console.log( info.color );
-  }
+console.log('callllll');
+if (!error && response.statusCode == 200) {
+   	var info = JSON.parse(body);
+	//if(typeof info.color !== 'undefined'){
+		//console.log('color');
+		//info.color = 'green';
+		var color = [150, 150, 150];
+		if(info.color === 'blue'){
+			color = [0,0,255];
+		}
+		else if(info.color === 'white'){
+                        color = [255,255,255];
+		}
+                else if(info.color === 'red'){
+                        color = [255,0,0];
+                }
+                else if(info.color === 'green'){
+                        color = [0,255,0];
+                }		
+		my.screen.setColor.apply(this, color);
+    		//console.log( info.color );
+		//console.log(color);
+	//}else{
+		//console.log('temp');
+		//console.log(info);
+	//}
 }
-request(options, callback);
-
-
-/* 
-
-			var host = 'pebblecontrolsea.firebaseio.com';
-			host = 'goatstone.com';
-			var path = '/feed.json';
-			path  = '/';
-                        var options = {
-                                host: host,
-                                //port: 80,
-                                method: 'GET',
-                                path: path
-                        };
- var callback = function(response) {
-  var str = 'aaao'; 
-  response.on('data', function (chunk) {
-	console.log('cccoo');
-    str += chunk;
-  });
-  //the whole response has been recieved, so we just print it out here
-  response.on('end', function () {
-    console.log('end....',str);
-  });
+//console.log(123)
+//	request(options, callback);
 }
-http.request(options, callback).end();
-*/
-		});
+//console.log(456);
+        request(options, callback);
 
+});
 		every((3).second(), function(){	
 			var h = 'api-m2x.att.com';
 			var p = '/v2/devices/815191bff4d7dd4ad5c92fa4cc7cdd8d/updates/';

@@ -1,9 +1,11 @@
 /* pepple_edison : Jose Collas : 6.2015 */
 var Cylon = require('cylon');
 var querystring = require('querystring');
-var http = require('http');
 var request = require('request');
 var sd = require('./setDisplay');
+var pfb = require('./pollFireBase');
+//var sendD = require('./sendData');
+var pstM2X = require('./postM2X');
 
 Cylon.robot(
 {
@@ -39,90 +41,16 @@ Cylon.robot(
 			my.led.toggle();
 		});
 		// Timer
-		every((1).second(), function(){sd.setDisplay(my);});
-		every((2).second(), function(){pollFireBase(my);});
-		every((1).second(), function(){sendData(my, out);});
+		every((1).second(), function(){
+			sd.setDisplay(my);
+		});
+		every((2).second(), function(){
+			pfb.pollFireBase(my);
+		}); // possibly update display
+		every((2).second(), function(){		
+			pstM2X.postM2X(out);
+		});
 	}	
 }).start();
 
 
-function pollFireBase(my){
-			console.log('poll the server - - - ');
-			var fullURL =  'https://pebblecontrolsea.firebaseio.com/feed.json';
-			var options = {
-				url: fullURL,
-  				headers: {
-					'User-Agent': 'request'
-	  			}
-			};
-			function callback(error, response, body) {
-				console.log('callllll');
-				if (!error && response.statusCode == 200) {
-   					var info = JSON.parse(body);
-					//if(typeof info.color !== 'undefined'){
-					//console.log('color');
-					//info.color = 'green';
-					var color = [150, 150, 150];
-					if(info.color === 'blue'){
-						color = [0,0,255];
-					}
-					else if(info.color === 'white'){
-                        			color = [255,255,255];
-					}
-                			else if(info.color === 'red'){
-                        			color = [255,0,0];
-                			}
-               	 			else if(info.color === 'green'){
-                        			color = [0,255,0];
-                			}		
-					my.screen.setColor.apply(this, color);
-				}
-			}
-        		request(options, callback);
-}
-
-function sendData(my, out){
-			var h = 'api-m2x.att.com';
-			var p = '/v2/devices/815191bff4d7dd4ad5c92fa4cc7cdd8d/updates/';
-			var headers = {
-			        host: h,
-			        port: 443,
-			        method: 'POST',
-			        path: p,
-			        headers: {
-					'Content-Type' : 'application/json',
-					'X-M2X-KEY' : 'ed685207dcc9b6d9914381dae7f717c5'
-			        }
-    			};
-			var httpRqst = http.request(headers, function(r){
-				var cont = '';
-				r.on('data', function(d) {
-					cont += d;
-	    			});
-				r.on('end', function(d){
-					console.log('end...', cont);
-				});
-			});
-
-			var analogValue = my.temperature.analogRead();
-			var voltage = (analogValue * 5.0) / 1024;
-			var temperature = (voltage - 0.5) * 100;
-			// console.log('t', temperature);
-			var pack = {"values":{
-				"temperature":[{timestamp:new Date(), "value":out.temperature}],
-                                "sound":[{timestamp:new Date(), "value":out.sound}],
-                                "light":[{timestamp:new Date(), "value":out.light}]
-				}
-			};
-			//httpRqst.write(JSON.stringify(pack));
-			//httpRqst.end();
-}
-/*
-function setDisplay(my){
-	console.log('update local display...');
-	my.screen.setCursor(0, 4);
-	var d = new Date();
-	var dS = (d.getHours()) + ':' + (d.getMinutes()) + ':' + d.getSeconds();
-	my.screen.write( dS );            
-}
-*/

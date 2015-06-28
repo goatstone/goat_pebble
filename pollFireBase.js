@@ -5,7 +5,7 @@ var http = require('http');
 var request = require('request');
 
 function pollFireBase(my){
-			console.log('poll the server - - - ');
+			//console.log('poll the server - - - ');
 			var fullURL =  'https://pebblecontrolsea.firebaseio.com/feed.json';
 			var options = {
 				url: fullURL,
@@ -14,7 +14,7 @@ function pollFireBase(my){
 	  			}
 			};
 			function callback(error, response, body) {
-				console.log('callllll');
+				//console.log('callllll');
 				if (!error && response.statusCode == 200) {
    					var info = JSON.parse(body);
 					//if(typeof info.color !== 'undefined'){
@@ -38,3 +38,4 @@ function pollFireBase(my){
 			}
         		request(options, callback);
 }
+exports.pollFireBase = pollFireBase;

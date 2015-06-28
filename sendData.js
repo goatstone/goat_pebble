@@ -19,6 +19,7 @@ function sendData(my, out){
     			};
 			var httpRqst = http.request(headers, function(r){
 				var cont = '';
+				r.on('error', function(e){console.log('e', e);});
 				r.on('data', function(d) {
 					cont += d;
 	    			});
@@ -37,6 +38,9 @@ function sendData(my, out){
                                 "light":[{timestamp:new Date(), "value":out.light}]
 				}
 			};
-			//httpRqst.write(JSON.stringify(pack));
-			//httpRqst.end();
+			//console.log(JSON.stringify(pack));
+			var s = JSON.stringify(pack);
+			httpRqst.write(s);
+			httpRqst.end();
 }
+exports.sendData = sendData;

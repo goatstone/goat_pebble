@@ -1,0 +1,26 @@
+{
+  "name": "goat_pebble",
+  "version": "1.0.0",
+  "description": "Prototype functionality for the Intel Edison board.",
+  "main": "init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goatstone/goat_pebble.git"
+  },
+  "author": "Jose Collas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goatstone/goat_pebble/issues"
+  },
+  "homepage": "https://github.com/goatstone/goat_pebble",
+  "devDependencies": {
+    "cylon": "^1.1.0",
+    "cylon-gpio": "^0.26.0",
+    "cylon-i2c": "^0.22.0",
+    "cylon-intel-iot": "^0.7.0",
+    "request": "^2.58.0"
+  }
+}

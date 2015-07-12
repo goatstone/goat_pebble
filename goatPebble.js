@@ -1,12 +1,7 @@
 /* pepple_edison : Jose Collas : 6.2015 */
 var Cylon = require('cylon');
-var querystring = require('querystring');
-var request = require('request');
 var sd = require('./setDisplay');
-var pfb = require('./pollFireBase');
-//var sendD = require('./sendData');
 var pstM2X = require('./postM2X');
-
 Cylon.robot(
 {
 	connections:{
@@ -35,7 +30,7 @@ Cylon.robot(
 			out.temperature = d;
 		});
 		my.rotary.on('analogRead', function(data){			
-			//my.screen.setColor(Math.round(data/5), 0, Math.round(data/5));
+			my.screen.setColor(Math.round(data/5), 0, Math.round(data/5));
 		});
 		my.button.on('push', function(){
 			my.led.toggle();
@@ -44,9 +39,6 @@ Cylon.robot(
 		every((1).second(), function(){
 			sd.setDisplay(my);
 		});
-		every((2).second(), function(){
-			pfb.pollFireBase(my);
-		}); // possibly update display
 		every((2).second(), function(){		
 			pstM2X.postM2X(out);
 		});

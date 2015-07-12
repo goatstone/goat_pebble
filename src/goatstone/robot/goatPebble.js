@@ -1,7 +1,7 @@
 /* pepple_edison : Jose Collas : 6.2015 */
 var Cylon = require('cylon');
-var sd = require('./setDisplay');
-var pstM2X = require('./postM2X');
+var sd = require('/home/goat/goat_pebble/src/goatstone/display/setDisplay');
+var pstM2X = require('/home/goat/goat_pebble/src/goatstone/com/postM2X');
 Cylon.robot(
 {
 	connections:{

@@ -1,0 +1,10 @@
+body { font: 13px Helvetica, Arial; }
+button{
+	background-color:aliceblue;
+	margin: 6px;
+}
+.message{
+	padding: 12px;
+	background-color:aliceblue;
+	border-radius: 6px;
+}

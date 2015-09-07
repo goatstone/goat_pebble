@@ -22,7 +22,7 @@ function postM2X( out){
                 }};
          request(options, function(e, r, b){
          	var s = JSON.stringify(Object.keys(r));
-         	console.log('r:: ', r.body);
+         	//console.log('r:: ', r.body);
          });
 }
 exports.postM2X = postM2X;

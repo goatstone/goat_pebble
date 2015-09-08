@@ -1,4 +1,6 @@
-body { font: 13px Helvetica, Arial; }
+body { 
+	font: 13px Helvetica, Arial; 
+}
 button{
 	background-color:aliceblue;
 	margin: 6px;
@@ -7,4 +9,7 @@ button{
 	padding: 12px;
 	background-color:aliceblue;
 	border-radius: 6px;
+}
+div.message{
+	font-size:1.4em;
 }

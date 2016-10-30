@@ -3,10 +3,10 @@ var https = require('https')
 var mraa = require('mraa'); 
 var async = require('async')
 // gpio 
-var dp4 = new mraa.Gpio( 4 ); 
-dp4.dir(mraa.DIR_OUT)
-dp4.write(1)
-setTimeout( function(){dp4.write(0) }, 30000 )
+//var dp4 = new mraa.Gpio( 4 ); 
+//dp4.dir(mraa.DIR_OUT)
+//dp4.write(1)
+//setTimeout( function(){dp4.write(0) }, 30000 )
 var sVal = 20 // float btw 20 and 40
 var isOnLED = 1; 
 // analog 
